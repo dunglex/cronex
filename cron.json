@@ -1,0 +1,16 @@
+[
+  {
+    "name": "memory-check",
+    "cron": "*/10 * * * * *",
+    "cmd": "powershell",
+    "args": ["-NoProfile", "-NonInteractive", "-Command", "$mem = Get-CimInstance Win32_OperatingSystem; Write-Host ('Memory Usage: {0:N2}% ({1:N2} GB / {2:N2} GB)' -f (($mem.TotalVisibleMemorySize - $mem.FreePhysicalMemory) / $mem.TotalVisibleMemorySize * 100), (($mem.TotalVisibleMemorySize - $mem.FreePhysicalMemory) / 1MB), ($mem.TotalVisibleMemorySize / 1MB))"],
+    "enabled": true
+  },
+  {
+    "name": "process-count",
+    "cron": "*/30 * * * * *",
+    "cmd": "powershell",
+    "args": ["-NoProfile", "-NonInteractive", "-Command", "$count = (Get-Process).Count; Write-Host 'Running processes:' $count"],
+    "enabled": true
+  }
+]
