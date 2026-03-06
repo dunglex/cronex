@@ -1,4 +1,4 @@
-name: Build Binaries
+name: Build and Release
 
 on:
   push:
@@ -10,6 +10,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:
@@ -41,3 +43,30 @@ jobs:
         with:
           name: ${{ matrix.output }}
           path: ${{ matrix.output }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/cronex-windows-x64.exe/cronex-windows-x64.exe
+            artifacts/cronex-linux-x64/cronex-linux-x64
+          draft: false
+          prerelease: false
+          generate_release_notes: true
