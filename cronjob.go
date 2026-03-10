@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
 
 type CronJob struct {
@@ -25,8 +28,23 @@ func ReadCronJobs(path string) ([]CronJob, error) {
 		return tasks, err
 	}
 	defer file.Close()
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&tasks)
+
+	// Determine file type based on extension
+	ext := strings.ToLower(filepath.Ext(path))
+
+	switch ext {
+	case ".yaml", ".yml":
+		decoder := yaml.NewDecoder(file)
+		err = decoder.Decode(&tasks)
+	case ".json":
+		decoder := json.NewDecoder(file)
+		err = decoder.Decode(&tasks)
+	default:
+		// Default to JSON for backward compatibility
+		decoder := json.NewDecoder(file)
+		err = decoder.Decode(&tasks)
+	}
+
 	return tasks, err
 }
 

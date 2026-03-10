@@ -5,7 +5,7 @@ A simple, lightweight cron job scheduler written in Go that executes scheduled t
 ## Features
 
 - 🕐 **Cron scheduling with second precision** - Uses extended cron format with seconds support
-- 📝 **JSON-based configuration** - Easy to configure and manage scheduled tasks
+- 📝 **JSON and YAML configuration** - Easy to configure and manage scheduled tasks in your preferred format
 - 🚀 **Cross-platform** - Works on Windows and Linux
 - 💬 **Human-readable schedules** - Converts cron expressions to readable descriptions
 - 📊 **Real-time output** - Displays task execution output immediately
@@ -96,6 +96,10 @@ If you prefer to set up manually:
 
 ## Configuration
 
+CRONEX supports both JSON and YAML configuration formats. The format is automatically detected based on the file extension (`.json`, `.yaml`, or `.yml`).
+
+### JSON Configuration
+
 Create a `cron.json` file with your scheduled tasks:
 
 ```json
@@ -108,6 +112,20 @@ Create a `cron.json` file with your scheduled tasks:
     "enabled": true
   }
 ]
+```
+
+### YAML Configuration
+
+Or create a `cron.yaml` (or `cron.yml`) file:
+
+```yaml
+- name: task-name
+  cron: "*/10 * * * * *"
+  cmd: command
+  args:
+    - arg1
+    - arg2
+  enabled: true
 ```
 
 ### Configuration Fields
@@ -149,13 +167,18 @@ Run with the default configuration file (`./cron.json`):
 ./cronex
 ```
 
-Specify a custom configuration file:
+Specify a custom configuration file (supports both JSON and YAML):
 
 ```bash
 ./cronex -config /path/to/config.json
+./cronex -config /path/to/config.yaml
 ```
 
 ## Example Configuration
+
+### JSON Example
+
+### JSON Format
 
 ```json
 [
@@ -174,6 +197,48 @@ Specify a custom configuration file:
     "enabled": true
   }
 ]
+```
+
+### YAML Format
+
+```yaml
+- name: memory-check
+  cron: "*/10 * * * * *"
+  cmd: powershell
+  args:
+    - -NoProfile
+    - -Command
+    - Get-Process | Measure-Object -Property WorkingSet -Sum
+  enabled: true
+
+- name: backup
+  cron: "0 0 2 * * *"
+  cmd: bash
+  args:
+    - -c
+    - tar -czf backup.tar.gz /data
+  enabled: true
+```
+
+### YAML Example
+
+```yaml
+- name: memory-check
+  cron: "*/10 * * * * *"
+  cmd: powershell
+  args:
+    - "-NoProfile"
+    - "-Command"
+    - "Get-Process | Measure-Object -Property WorkingSet -Sum"
+  enabled: true
+
+- name: backup
+  cron: "0 0 2 * * *"
+  cmd: bash
+  args:
+    - "-c"
+    - "tar -czf backup.tar.gz /data"
+  enabled: true
 ```
 
 ## Building Releases

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "test-echo",
+    "cron": "*/5 * * * * *",
+    "cmd": "echo",
+    "args": ["[TEST] Cron job executed successfully"],
+    "enabled": true
+  },
+  {
+    "name": "test-date",
+    "cron": "*/10 * * * * *",
+    "cmd": "powershell",
+    "args": ["-NoProfile", "-Command", "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'"],
+    "enabled": true
+  },
+  {
+    "name": "disabled-test",
+    "cron": "* * * * * *",
+    "cmd": "echo",
+    "args": ["This should not run"],
+    "enabled": false
+  }
+]

@@ -1,0 +1,20 @@
+- name: test-task-yaml-1
+  cron: "*/10 * * * * *"
+  cmd: echo
+  args:
+    - "Hello from YAML"
+  enabled: true
+
+- name: test-task-yaml-2
+  cron: "0 */5 * * * *"
+  cmd: echo
+  args:
+    - "Every 5 minutes"
+  enabled: false
+
+- name: test-task-yaml-3
+  cron: "0 30 9 * * *"
+  cmd: echo
+  args:
+    - "Daily at 9:30"
+  enabled: true
