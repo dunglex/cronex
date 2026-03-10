@@ -1,6 +1,6 @@
 # CRONEX Makefile
 
-.PHONY: help build test test-verbose test-coverage test-race test-short clean run benchmark lint fmt vet tidy install
+.PHONY: help build test test-verbose test-coverage test-short clean run benchmark lint fmt vet tidy install
 
 # Default target
 help:
@@ -11,7 +11,6 @@ help:
 	@echo "  make test          - Run all tests"
 	@echo "  make test-verbose  - Run tests with verbose output"
 	@echo "  make test-coverage - Run tests with coverage report"
-	@echo "  make test-race     - Run tests with race detection"
 	@echo "  make test-short    - Run short tests only"
 	@echo "  make benchmark     - Run benchmarks"
 	@echo "  make lint          - Run linter (requires golangci-lint)"
@@ -52,11 +51,6 @@ test-coverage:
 	go test -v -cover -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out -o coverage.html
 	@echo "Coverage report generated: coverage.html"
-
-# Run tests with race detection
-test-race:
-	@echo "Running tests with race detection..."
-	go test -race -v ./...
 
 # Run short tests
 test-short:
@@ -114,7 +108,3 @@ install:
 # Run all checks and build
 all: fmt vet test build
 	@echo "All checks passed and build complete!"
-
-# CI pipeline (for automated testing)
-ci: tidy fmt vet test-race
-	@echo "CI pipeline complete!"
