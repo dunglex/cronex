@@ -30,6 +30,70 @@ cd cronex
 go build -o cronex .
 ```
 
+### Install as Linux Systemd Service
+
+For Linux users, you can install cronex as a systemd service to run automatically on startup:
+
+```bash
+sudo ./install.sh
+```
+
+This installation script will:
+- Build the binary
+- Create a dedicated `cronex` user and group
+- Install the binary to `/usr/local/bin/`
+- Install the systemd service file
+- Set up the configuration directory at `/etc/cronex/`
+- Copy your `cron.json` to the systemd configuration location
+
+After installation:
+
+```bash
+# Edit your configuration
+sudo nano /etc/cronex/cron.json
+
+# Start the service
+sudo systemctl start cronex
+
+# Check status
+sudo systemctl status cronex
+
+# View logs
+sudo journalctl -u cronex -f
+
+# Enable to run on boot (already done by install script)
+sudo systemctl enable cronex
+```
+
+### Manual Systemd Setup
+
+If you prefer to set up manually:
+
+1. Create a system user:
+   ```bash
+   sudo useradd --system --no-create-home --shell /bin/false cronex
+   ```
+
+2. Copy the binary:
+   ```bash
+   sudo cp cronex /usr/local/bin/
+   ```
+
+3. Create config directory:
+   ```bash
+   sudo mkdir -p /etc/cronex
+   sudo cp cron.json /etc/cronex/
+   sudo chown cronex:cronex /etc/cronex
+   ```
+
+4. Install the service file:
+   ```bash
+   sudo cp cronex.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable cronex
+   sudo systemctl start cronex
+   ```
+
 ## Configuration
 
 Create a `cron.json` file with your scheduled tasks:

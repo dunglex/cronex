@@ -1,0 +1,18 @@
+[Unit]
+Description=Cronex - Simple cron job scheduler
+Documentation=https://github.com/dunglex/cronex
+After=network.target
+
+[Service]
+Type=simple
+User=cronex
+Group=cronex
+WorkingDirectory=/etc/cronex
+ExecStart=/usr/local/bin/cronex -config /etc/cronex/cron.json
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
