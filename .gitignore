@@ -3,3 +3,5 @@
 logs/
 *.exe
 cronex
+coverage.out
+coverage.html
