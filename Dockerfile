@@ -10,5 +10,4 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /app
 COPY --from=builder /build/cronex .
-COPY cron.json ./cron.json
-CMD ["./cronex", "-config", "./cron.json"]
+CMD ["./cronex"]

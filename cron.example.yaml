@@ -1,51 +1,87 @@
 # CRONEX YAML Configuration Example
 # This file demonstrates the YAML format for configuring cron jobs
+# All commands are designed to work on a fresh Linux installation
 
-# Example 1: Simple task that runs every 10 seconds
+# Example 1: Memory usage check every 10 seconds
 - name: memory-check
   cron: "*/10 * * * * *"
-  cmd: powershell
+  cmd: free
   args:
-    - -NoProfile
-    - -NonInteractive
-    - -Command
-    - $mem = Get-CimInstance Win32_OperatingSystem; Write-Host ('Memory Usage: {0:N2}% ({1:N2} GB / {2:N2} GB)' -f (($mem.TotalVisibleMemorySize - $mem.FreePhysicalMemory) / $mem.TotalVisibleMemorySize * 100), (($mem.TotalVisibleMemorySize - $mem.FreePhysicalMemory) / 1MB), ($mem.TotalVisibleMemorySize / 1MB))
+    - -h
   enabled: true
 
-# Example 2: Process count check every 30 seconds
-- name: process-count
+# Example 2: Disk usage check every 30 seconds
+- name: disk-usage
   cron: "*/30 * * * * *"
-  cmd: powershell
+  cmd: df
   args:
-    - -NoProfile
-    - -NonInteractive
-    - -Command
-    - $count = (Get-Process).Count; Write-Host 'Running processes:' $count
+    - -h
+    - /
   enabled: true
 
-# Example 3: Hourly backup task
-- name: hourly-backup
+# Example 3: System uptime every minute
+- name: system-uptime
+  cron: "0 * * * * *"
+  cmd: uptime
+  args: []
+  enabled: true
+
+# Example 4: Current date and time every 15 seconds
+- name: show-datetime
+  cron: "*/15 * * * * *"
+  cmd: date
+  args:
+    - +%Y-%m-%d %H:%M:%S
+  enabled: false
+
+# Example 5: List running processes every 20 seconds
+- name: process-list
+  cron: "*/20 * * * * *"
+  cmd: sh
+  args:
+    - -c
+    - ps aux | head -n 10
+  enabled: false
+
+# Example 6: Show current user every hour
+- name: show-user
   cron: "0 0 * * * *"
-  cmd: bash
-  args:
-    - -c
-    - tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz /path/to/data
+  cmd: whoami
+  args: []
   enabled: false
 
-# Example 4: Daily task at 2 AM
-- name: daily-cleanup
-  cron: "0 0 2 * * *"
-  cmd: bash
+# Example 7: Network interface info every 5 minutes
+- name: network-info
+  cron: "0 */5 * * * *"
+  cmd: sh
   args:
     - -c
-    - find /tmp -type f -mtime +7 -delete
+    - ip addr show | grep -E 'inet |link'
   enabled: false
 
-# Example 5: Weekly task (Sunday at midnight)
-- name: weekly-report
+# Example 8: System load average every 2 minutes
+- name: load-average
+  cron: "0 */2 * * * *"
+  cmd: sh
+  args:
+    - -c
+    - cat /proc/loadavg
+  enabled: false
+
+# Example 9: Count files in home directory daily at 9 AM
+- name: count-home-files
+  cron: "0 0 9 * * *"
+  cmd: sh
+  args:
+    - -c
+    - find $HOME -type f 2>/dev/null | wc -l
+  enabled: false
+
+# Example 10: Weekly system info (Sunday at midnight)
+- name: weekly-system-info
   cron: "0 0 0 * * 0"
-  cmd: bash
+  cmd: sh
   args:
     - -c
-    - /usr/local/bin/generate-weekly-report.sh
+    - uname -a && uptime
   enabled: false
