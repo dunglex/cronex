@@ -18,6 +18,7 @@ A simple, lightweight cron job scheduler written in Go that executes scheduled t
 Download the latest binaries from the [GitHub Releases](../../releases) page:
 - `cronex-windows-x64.exe` - Windows x64
 - `cronex-linux-x64` - Linux x64
+- `cronex-linux-arm64` - Linux ARM64
 
 ### Build from Source
 
