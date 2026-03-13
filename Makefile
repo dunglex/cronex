@@ -33,6 +33,7 @@ build-all:
 	@echo "Building for all platforms..."
 	GOOS=windows GOARCH=amd64 go build -o cronex-windows-x64.exe .
 	GOOS=linux GOARCH=amd64 go build -o cronex-linux-x64 .
+	GOOS=linux GOARCH=arm64 go build -o cronex-linux-arm64 .
 	@echo "Build complete!"
 
 # Run all tests

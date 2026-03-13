@@ -44,6 +44,9 @@ jobs:
           - goos: linux
             goarch: amd64
             output: cronex-linux-x64
+          - goos: linux
+            goarch: arm64
+            output: cronex-linux-arm64
     
     steps:
       - name: Checkout code
@@ -96,6 +99,7 @@ jobs:
           files: |
             ./artifacts/cronex-windows-x64.exe
             ./artifacts/cronex-linux-x64
+            ./artifacts/cronex-linux-arm64
           draft: false
           prerelease: false
           generate_release_notes: true
